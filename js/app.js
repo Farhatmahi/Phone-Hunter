@@ -41,7 +41,9 @@ const displayPhones = (phones, dataLimit) => {
                   <p class="card-text">
                    ${phone.brand}
                   </p>
-                  <button class="btn btn-primary">Buy Now</button>
+                  <button onclick="loadPhoneDetails('${phone.slug}')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#phoneDetailsModal">Show Details</button>
+                  
+
                 </div>
               </div>
 
@@ -58,8 +60,17 @@ const processSearch = (dataLimit) => {
   loader(true);
 };
 
+//search button
 document.getElementById("btn-search").addEventListener("click", () => {
-  processSearch(6)
+  processSearch(6);
+});
+
+//enter key handler
+document.getElementById("search-field").addEventListener("keypress", (e) => {
+  // console.log(e.key)
+  if (e.key === "Enter") {
+    processSearch(6);
+  }
 });
 
 const loader = (isLoading) => {
@@ -74,6 +85,15 @@ const loader = (isLoading) => {
 //not the best way to show all
 
 document.getElementById("btn-show-all").addEventListener("click", () => {
-    processSearch();
-    console.log("click");
+  processSearch();
+  console.log("click");
 });
+
+//load phone details
+
+const loadPhoneDetails = (id) => {
+  const url = `https://openapi.programming-hero.com/api/phone/${id}`;
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => console.log(data.data));
+};
